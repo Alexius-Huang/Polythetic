@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route path="/segmentation-editor" component={} />
+        <Route path="/segmentation-editor" component={SegEditor} />
       </div>
     );
   }
