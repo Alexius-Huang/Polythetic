@@ -17,10 +17,10 @@ class Toolbar extends Component {
     return (
       <section className="SegEditor-Toolbar">
         <div className="tool-section">
-          <button onClick={this.changeToolTo('pencil')} className={tool == 'pencil' ? 'active' : ''}>
+          <button onClick={this.changeToolTo('pencil')} className={tool === 'pencil' ? 'active' : ''}>
             <Icon type="pencil" />
           </button>
-          <button onClick={this.changeToolTo('eraser')} className={tool == 'eraser' ? 'active' : ''}>
+          <button onClick={this.changeToolTo('eraser')} className={tool === 'eraser' ? 'active' : ''}>
             <Icon type="eraser" />
           </button>
         </div>

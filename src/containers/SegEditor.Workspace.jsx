@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { setupWorkspace, addVertex, createPolygon } from '../actions/Segmentation.Actions';
 import Snap from 'snapsvg';
 import sampleImage from '../sample-img-2.jpg';
 
@@ -8,26 +9,52 @@ class Workspace extends Component {
   constructor(props) {
     super(props);
     this.state = { img: { width: NaN, height: NaN } };
-    this.setupSVG = this.setupSVG.bind(this);
-    this.onImageLoad = this.onImageLoad.bind(this);
   }
 
-  onImageLoad({ target: { offsetWidth: width, offsetHeight: height } }) {
+  onImageLoad = ({ target: { offsetWidth: width, offsetHeight: height } }) => {
     this.setState({ img: { width, height } }, function() {
       this.setupSVG();
     });
   }
 
-  setupSVG() {
+  /* TODO: Should move the logic of setting up SVG to saga */
+  setupSVG = () => {
     const { img: { width: imgWidth, height: imgHeight } } = this.state;
     const { svg, svgElement } = this;
+    const { dispatch } = this.props;
     const { clientWidth: svgWidth, clientHeight: svgHeight } = svgElement;
-    const imageOffset = [
-      (svgWidth - imgWidth) / 2,
-      (svgHeight - imgHeight) / 2
-    ];
+    const imgTranslation = [(svgWidth - imgWidth) / 2, (svgHeight - imgHeight) / 2];
 
-    const svgImg = svg.image(sampleImage, ...imageOffset, imgWidth, imgHeight);
+    const svgImg = svg.image(sampleImage, 0, 0, imgWidth, imgHeight);
+
+    svgImg.transform(`translate(${imgTranslation})`);
+    svgImg.addClass('seg-image');
+    svgImg.click(this.handleImageClick);
+
+    const polygonGroup = svg.g();
+    polygonGroup.addClass('seg-polygon-group');
+    polygonGroup.transform(`translate(${imgTranslation})`);
+
+    dispatch(setupWorkspace({
+      snapSvgObj: svg,
+      snapImageObj: svgImg,
+      snapPolygonGroupObj: polygonGroup
+    }));
+  }
+
+  handleImageClick = (event) => {
+    const { image, focused: { polygon }, dispatch } = this.props;
+    if (image) {
+      const { x: imgLeftBound, y: imgTopBound } = image.getBBox();
+      const { offsetX: mouseX, offsetY: mouseY } = event;
+      const [x, y] = [mouseX - imgLeftBound, mouseY - imgTopBound];
+
+      if (polygon) {
+        dispatch(addVertex(x, y));
+      } else {
+        dispatch(createPolygon(x, y));
+      }
+    }
   }
 
   render() {
@@ -53,12 +80,32 @@ class Workspace extends Component {
   }
 }
 
-function mapStateToProps({ Segmentation: { tool } }) {
-  return { tool };
+function mapStateToProps({ Segmentation: { tool, workspace } }) {
+  const {
+    svg,
+    image,
+    polygonGroup,
+    focused
+  } = workspace;
+
+  return {
+    tool,
+    svg,
+    image,
+    polygonGroup,
+    focused
+  };
 }
 
 Workspace.propTypes = {
   tool: PropTypes.oneOf(['pencil', 'eraser']).isRequired,
+  svg: PropTypes.object,
+  image: PropTypes.object,
+  polygonGroup: PropTypes.object,
+  focused: PropTypes.shape({
+    vertex: PropTypes.object,
+    polygon: PropTypes.object
+  }),
   dispatch: PropTypes.func.isRequired
 };
 

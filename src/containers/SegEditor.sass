@@ -49,6 +49,16 @@ section.SegEditor
     > svg
       background-color: #555
 
+      polygon.seg-polygon
+        fill: rgba(255, 0, 0, 0.3)
+        pointer-events: none
+
+      circle.seg-polygon-vertex
+        fill: rgba(255, 0, 0, 0.5)
+
+        &.active
+          r: 5
+
     > img.hidden-img
       position: absolute
       left: 100vw
