@@ -1,0 +1,27 @@
+@function fetch($map, $keys) {
+  $key: nth($keys, 1);
+  $length: length($keys);
+  $value: map-get($map, $key);
+  @if ($length > 1) {
+    $rest: ();
+    @for $i from 2 through $length {
+      $rest: append($rest, nth($keys, $i))
+    }
+    @return fetch($value, $rest)
+  }
+  @else {
+    @return $value;
+  }
+}
+
+$seg-editor: (
+  toolbar: (
+    height: 50pt,
+    background-color: #333,
+    font-color: #eee,
+    font-size: 14pt
+  ),
+  workspace: (
+    
+  )
+);

@@ -1,0 +1,28 @@
+@import '../sass/_variables.scss'
+
+$toolbar: fetch($seg-editor, toolbar)
+$workspace: fetch($seg-editor, workspace)
+
+section.SegEditor
+  width: 100vw
+  height: 100vh
+
+  > section.SegEditor-Toolbar
+    height: fetch($toolbar, height)
+    line-height: fetch($toolbar, height)
+    width: 100%
+    background-color: fetch($toolbar, background-color)
+    color: fetch($toolbar, font-color)
+    font-size: fetch($toolbar, font-size)
+    padding: 0 20pt
+
+  > section.SegEditor-Workspace
+    height: calc(100vh - #{fetch($toolbar, height)})
+    width: 100%
+
+    > svg
+
+    > img.hidden-img
+      position: absolute
+      left: 100vw
+      opacity: 0
