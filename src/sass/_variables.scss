@@ -34,6 +34,11 @@
   &:active {
     background-color: #fff;
   }
+
+  &.active {
+    background-color: #ddd;
+    color: #333;
+  }
 }
 
 $seg-editor: (

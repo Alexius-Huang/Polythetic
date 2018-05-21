@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snap from 'snapsvg';
 import sampleImage from '../sample-img-2.jpg';
@@ -9,7 +10,6 @@ class Workspace extends Component {
     this.state = { img: { width: NaN, height: NaN } };
     this.setupSVG = this.setupSVG.bind(this);
     this.onImageLoad = this.onImageLoad.bind(this);
-    console.log(props.tool);
   }
 
   onImageLoad({ target: { offsetWidth: width, offsetHeight: height } }) {
@@ -56,5 +56,10 @@ class Workspace extends Component {
 function mapStateToProps({ Segmentation: { tool } }) {
   return { tool };
 }
+
+Workspace.propTypes = {
+  tool: PropTypes.oneOf(['pencil', 'eraser']).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps)(Workspace);
