@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import sampleImage from '../sample-img.jpg';
+import sampleImage from '../sample-img-2.jpg';
 import Snap from 'snapsvg';
 
 class Workspace extends Component {

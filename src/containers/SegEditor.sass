@@ -14,7 +14,33 @@ section.SegEditor
     background-color: fetch($toolbar, background-color)
     color: fetch($toolbar, font-color)
     font-size: fetch($toolbar, font-size)
-    padding: 0 20pt
+    padding: 0 10pt
+
+    > div.tool-section
+      height: fetch($toolbar, height)
+      display: inline-block
+
+      + div.tool-section
+        margin-left: 10pt
+
+      &:before
+        content: ''
+        vertical-align: middle
+        height: 100%
+        width: 0
+        display: inline-block
+
+      > button
+        @include shared-button-style
+        vertical-align: middle
+
+        > span.fa
+          font-size: 12pt
+          display: inline-block
+          height: 100%
+
+        + button
+          border-left: 0
 
   > section.SegEditor-Workspace
     height: calc(100vh - #{fetch($toolbar, height)})
