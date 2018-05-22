@@ -28,7 +28,6 @@ const handleSetupWorkspace = (state, {
   ...state,
   workspace: { ...state.workspace, svg, image, polygonGroup }
 });
-const handleSetTool = assignPayloadTo('tool');
 const handleFocusVertex = (state, { payload: vertex }) => ({
   ...state,
   workspace: {
@@ -52,7 +51,7 @@ const handleFocusPolygon = (state, { payload: polygon }) => ({
 
 export default handleActions({
   SETUP_WORKSPACE: handleSetupWorkspace,
-  SET_TOOL: handleSetTool,
+  SET_TOOL: assignPayloadTo('tool'),
   // ADD_POINT: handleAddPoint,
   FOCUS_VERTEX: handleFocusVertex,
   // CREATE_POLYGON: handleCreatePolygon,

@@ -15,32 +15,63 @@ section.SegEditor
     color: fetch($toolbar, font-color)
     font-size: fetch($toolbar, font-size)
     padding: 0 10pt
+    font-size: 0
 
-    > div.tool-section
-      height: fetch($toolbar, height)
+    &:before
+      content: ''
+      vertical-align: middle
+      height: 100%
+      width: 0
       display: inline-block
 
-      + div.tool-section
-        margin-left: 10pt
+    > div.toolbar-wrapper
+      display: inline-block
+      width: 100%
+      height: 30pt
+      line-height: 30pt
+      vertical-align: top
+      text-align: right
+      vertical-align: middle
 
-      &:before
-        content: ''
-        vertical-align: middle
-        height: 100%
-        width: 0
+      > div.tool-section
         display: inline-block
 
-      > button
-        @include shared-button-style
-        vertical-align: middle
+        + div.tool-section
+          margin-left: 10pt
 
-        > span.fa
-          font-size: 12pt
+        > input
           display: inline-block
-          height: 100%
+          vertical-align: top
+          height: 30pt
+          line-height: 30pt
+          width: 50pt
+          padding: 0 5pt
+          text-align: right
+          font-size: 10pt
+          box-sizing: border-box
+          border: 1pt solid darken(#ddd, 30%)
+          background-color: transparent
+          color: darken(#ddd, 30%)
+          transition: .25s
 
-        + button
-          border-left: 0
+          &:focus
+            color: #ddd
+            transition: .25s
+
+          + button
+            border-left: 0
+
+        > button
+          @include shared-button-style
+          vertical-align: middle
+
+          > span.fa
+            font-size: 12pt
+            display: inline-block
+            height: 100%
+
+          + button
+            border-left: 0
 
   > section.SegEditor-Workspace
     height: calc(100vh - #{fetch($toolbar, height)})

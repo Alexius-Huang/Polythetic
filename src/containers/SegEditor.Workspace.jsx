@@ -45,6 +45,7 @@ class Workspace extends Component {
   handleImageClick = (event) => {
     const { image, focused: { polygon }, dispatch } = this.props;
     if (image) {
+      /* Get mouse position relative to image */
       const { x: imgLeftBound, y: imgTopBound } = image.getBBox();
       const { offsetX: mouseX, offsetY: mouseY } = event;
       const [x, y] = [mouseX - imgLeftBound, mouseY - imgTopBound];
