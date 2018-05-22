@@ -6,14 +6,16 @@ export const {
   addVertex,
   focusVertex,
   createPolygon,
-  focusPolygon
+  focusPolygon,
+  unfocusAll
 } = createActions({
   SETUP_WORKSPACE: snapObjParams => snapObjParams,
   SET_TOOL: toolName => toolName,
   ADD_VERTEX: (x, y) => ({ x, y }),
   FOCUS_VERTEX: snapVertexObj => snapVertexObj,
   CREATE_POLYGON: (x, y) => ({ x, y }),
-  FOCUS_POLYGON: snapPolygonObj => snapPolygonObj
+  FOCUS_POLYGON: snapPolygonObj => snapPolygonObj,
+  UNFOCUS_ALL: () => undefined
 });
 
 /* Workspace included params:

@@ -1,14 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setupWorkspace, addVertex, createPolygon } from '../actions/Segmentation.Actions';
+import { setupWorkspace, addVertex, createPolygon, unfocusAll } from '../actions/Segmentation.Actions';
 import Snap from 'snapsvg';
 import sampleImage from '../sample-img-2.jpg';
 
 class Workspace extends Component {
   constructor(props) {
     super(props);
-    this.state = { img: { width: NaN, height: NaN } };
+    this.state = {
+      img: { width: NaN, height: NaN },
+      tool: props.tool
+    };
+  }
+
+  static propTypes = {
+    tool: PropTypes.oneOf(['pointer', 'pencil', 'eraser']).isRequired,
+    svg: PropTypes.object,
+    image: PropTypes.object,
+    polygonGroup: PropTypes.object,
+    focused: PropTypes.shape({
+      vertex: PropTypes.object,
+      polygon: PropTypes.object
+    }),
+    dispatch: PropTypes.func.isRequired
+  };
+
+  componentDidUpdate(prevProps) {
+    const { focused, dispatch } = this.props;
+    /* Tool state transition */
+    if (
+      prevProps.tool === 'pencil' &&
+      this.props.tool !== 'pencil' &&
+      focused.polygon && focused.vertex
+    ) {
+      dispatch(unfocusAll());
+    }
   }
 
   onImageLoad = ({ target: { offsetWidth: width, offsetHeight: height } }) => {
@@ -43,17 +70,19 @@ class Workspace extends Component {
   }
 
   handleImageClick = (event) => {
-    const { image, focused: { polygon }, dispatch } = this.props;
+    const { tool, image, focused: { polygon }, dispatch } = this.props;
     if (image) {
       /* Get mouse position relative to image */
       const { x: imgLeftBound, y: imgTopBound } = image.getBBox();
       const { offsetX: mouseX, offsetY: mouseY } = event;
       const [x, y] = [mouseX - imgLeftBound, mouseY - imgTopBound];
 
-      if (polygon) {
-        dispatch(addVertex(x, y));
-      } else {
-        dispatch(createPolygon(x, y));
+      if (tool === 'pencil') {
+        if (polygon) {
+          dispatch(addVertex(x, y));
+        } else {
+          dispatch(createPolygon(x, y));
+        }
       }
     }
   }
@@ -97,17 +126,5 @@ function mapStateToProps({ Segmentation: { tool, workspace } }) {
     focused
   };
 }
-
-Workspace.propTypes = {
-  tool: PropTypes.oneOf(['pencil', 'eraser']).isRequired,
-  svg: PropTypes.object,
-  image: PropTypes.object,
-  polygonGroup: PropTypes.object,
-  focused: PropTypes.shape({
-    vertex: PropTypes.object,
-    polygon: PropTypes.object
-  }),
-  dispatch: PropTypes.func.isRequired
-};
 
 export default connect(mapStateToProps)(Workspace);

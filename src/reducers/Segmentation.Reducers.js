@@ -10,7 +10,7 @@ const defaultState = {
       vertex: null
     }
   },
-  tool: 'pencil'
+  tool: 'pointer'
 };
 
 const assignPayloadTo = (property) => (state, { payload }) => ({
@@ -48,6 +48,13 @@ const handleFocusPolygon = (state, { payload: polygon }) => ({
     }
   }
 });
+const handleUnfocusAll = state => ({
+  ...state,
+  workspace: {
+    ...state.workspace,
+    focused: { polygon: null, vertex: null }
+  }
+});
 
 export default handleActions({
   SETUP_WORKSPACE: handleSetupWorkspace,
@@ -55,5 +62,6 @@ export default handleActions({
   // ADD_POINT: handleAddPoint,
   FOCUS_VERTEX: handleFocusVertex,
   // CREATE_POLYGON: handleCreatePolygon,
-  FOCUS_POLYGON: handleFocusPolygon
+  FOCUS_POLYGON: handleFocusPolygon,
+  UNFOCUS_ALL: handleUnfocusAll
 }, defaultState);

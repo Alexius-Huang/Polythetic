@@ -19,6 +19,9 @@ class Toolbar extends Component {
       <section className="SegEditor-Toolbar">
         <div className="toolbar-wrapper">
           <div className="tool-section">
+            <button onClick={this.changeToolTo('pointer')} className={tool === 'pointer' ? 'active' : ''}>
+              <Icon type="mouse-pointer" />
+            </button>
             <button onClick={this.changeToolTo('pencil')} className={tool === 'pencil' ? 'active' : ''}>
               <Icon type="pencil" />
             </button>
@@ -46,7 +49,7 @@ function mapStateToProps({
 }
 
 Toolbar.propTypes = {
-  tool: PropTypes.oneOf(['pencil', 'eraser']).isRequired,
+  tool: PropTypes.oneOf(['pointer', 'pencil', 'eraser']).isRequired,
   zoomRate: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired
 };
